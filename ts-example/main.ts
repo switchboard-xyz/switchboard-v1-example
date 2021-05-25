@@ -10,6 +10,7 @@ import {
   TransactionInstruction,
   sendAndConfirmTransaction,
   clusterApiUrl,
+  Cluster,
 } from '@solana/web3.js';
 import {
   AggregatorState,
@@ -53,9 +54,20 @@ let argv = yargs(process.argv).options({
   },
 }).argv;
 
+function toCluster(cluster: string): Cluster {
+  switch (cluster) {
+    case "devnet":
+    case "testnet":
+    case "mainnet-beta": {
+      return cluster;
+    }
+  }
+  throw new Error("Invalid cluster provided.");
+}
 
 async function main() {
-  let connection = new Connection(clusterApiUrl('devnet', true), 'processed');
+  let cluster = 'devnet';
+  let connection = new Connection(clusterApiUrl(toCluster(cluster), true), 'processed');
   let payerKeypair = JSON.parse(fs.readFileSync(resolve(argv.payerFile), 'utf-8'));
   let payerAccount = new Account(payerKeypair);
 
@@ -71,7 +83,7 @@ async function main() {
   let signature = await sendAndConfirmTransaction(connection, new Transaction().add(transactionInstruction), [
     payerAccount,
   ]);
-  console.log(signature);
+  console.log(`https://explorer.solana.com/tx/${signature}?cluster=${cluster}`);
 }
 
 main().then(

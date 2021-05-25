@@ -1,5 +1,5 @@
 [package]
-name = "switchboard-example-user"
+name = "switchboard-example"
 version = "0.1.0"
 authors = ["mgild@umich.edu", "jessupjn@umich.edu"]
 edition = "2018"

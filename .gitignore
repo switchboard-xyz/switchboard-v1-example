@@ -6,4 +6,6 @@
 **package-lock.json
 /.cargo
 **/node_modules
+**/example-keypair.json
+**keypair.json
 
