@@ -9,6 +9,7 @@ import {
   Transaction,
   TransactionInstruction,
   sendAndConfirmTransaction,
+  clusterApiUrl,
 } from '@solana/web3.js';
 import {
   AggregatorState,
@@ -39,28 +40,24 @@ let argv = yargs(process.argv).options({
     type: 'string',
     describe: "Public key of the data feed to use.",
     demand: true,
-    default: ''
   },
   'payerFile': {
     type: 'string',
     describe: "Keypair file to pay for transactions.",
     demand: true,
-    default: ''
   },
   'programPubkey': {
     type: 'string',
     describe: "Example program pubkey.",
     demand: true,
-    default: ''
   },
 }).argv;
 
 
 async function main() {
-  let connection = new Connection(urlTls, 'processed');
+  let connection = new Connection(clusterApiUrl('devnet', true), 'processed');
   let payerKeypair = JSON.parse(fs.readFileSync(resolve(argv.payerFile), 'utf-8'));
   let payerAccount = new Account(payerKeypair);
-  console.log(exampleProgramAccount.publicKey.toString());
 
   let transactionInstruction = new TransactionInstruction({
     keys: [
