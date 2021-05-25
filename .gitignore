@@ -1,0 +1,9 @@
+**/target/
+*.sw[po]
+*.so
+**/.DS_Store
+**Cargo.lock
+**package-lock.json
+/.cargo
+**/node_modules
+
