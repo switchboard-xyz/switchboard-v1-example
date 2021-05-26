@@ -10,6 +10,7 @@ In this example, we will post an example Solana program that will parse and
 print a provided data feed.
 
 ```
+npm i
 cd "$(git rev-parse --show-toplevel)/example-program"
 cargo build-bpf --manifest-path=Cargo.toml --bpf-out-dir=$PWD
 PROGRAM_PUBKEY=$(solana program deploy switchboard_example.so | tee /dev/tty | grep "Program Id:" | awk '{print $NF}')
