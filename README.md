@@ -1,6 +1,7 @@
 Starter repo for all things Switchboard.
 
 # Prerequisites
+1. Install node 12: https://nodejs.org/en/download/package-manager/
 1. Docker compose: https://docs.docker.com/compose/install/
 1. ts-node: https://www.npmjs.com/package/ts-node
 
