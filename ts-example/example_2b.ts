@@ -70,10 +70,6 @@ function toCluster(cluster: string): Cluster {
   throw new Error("Invalid cluster provided.");
 }
 
-function waitForever(): Promise<void> {
-  return waitFor("", new EventEmitter());
-}
-
 async function main() {
   let cluster = 'devnet';
   let connection = new Connection(clusterApiUrl(toCluster(cluster), true), 'finalized');
@@ -88,15 +84,16 @@ async function main() {
     updateAuthPubkey
   );
   console.log("Feed update transaction submitted. Awaiting finalization...");
+  let emitter = new EventEmitter();
   let callback = async function (signatureResult: SignatureResult, ctx: Context) {
     let feedAccountInfo = await connection.getAccountInfo(dataFeedPubkey);
     let state: AggregatorState = AggregatorState.decodeDelimited(feedAccountInfo.data.slice(1));
     console.log(`(${dataFeedPubkey.toBase58()}) state.\n`,
                 JSON.stringify(state.toJSON(), null, 2));
-    process.exit(0);
+    emitter.emit("Done");
   };
   connection.onSignature(signature, callback, 'finalized');
-  await waitForever();
+  await waitFor("Done", emitter);
 }
 
 main().then(
