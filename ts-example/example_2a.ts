@@ -67,7 +67,7 @@ async function main() {
   await addFeedJob(connection, payerAccount, dataFeedAccount, [
     OracleJob.Task.create({
       httpTask: OracleJob.HttpTask.create({
-        url: `https://www.binance.com/api/v3/ticker/price?symbol=${pair}`
+        url: `https://www.binance.us/api/v3/ticker/price?symbol=BTCUSD`
       }),
     }),
     OracleJob.Task.create({
@@ -113,7 +113,7 @@ async function main() {
       "authorizeHeartbeat": false,
       "authorizeUsage": true
     });
-  console.log(`UPDATE_AUTH_KEY=${authAccount.publicKey}`);
+  console.log(`UPDATE_AUTH_KEY=${updateAuthAccount.publicKey}`);
 }
 
 main().then(
