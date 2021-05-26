@@ -13,13 +13,18 @@ print a provided data feed.
 ```
 npm i
 cd "$(git rev-parse --show-toplevel)/example-program"
+# Build example program
 cargo build-bpf --manifest-path=Cargo.toml --bpf-out-dir=$PWD
+# Publish example program
 PROGRAM_PUBKEY=$(solana program deploy switchboard_example.so | tee /dev/tty | grep "Program Id:" | awk '{print $NF}')
 cd ../ts-example
+# Create and fund a payer account for the example
 solana-keygen new --outfile example-keypair.json
 solana airdrop 5 example-keypair.json
+# Choose a feed to use in your program
 # Find Data Feed Pubkeys at https://switchboard.xyz/#/explorer
 FEED_PUBKEY="<YOUR FEED PUBKEY HERE>"
+# Run the example
 ts-node example_1.ts --payerFile=example-keypair.json --programPubkey=${PROGRAM_PUBKEY?} --dataFeedPubkey=${FEED_PUBKEY?}
 ```
 
@@ -38,7 +43,7 @@ In part `b` we will:
 1. Call `update` on a Switchboard Feed.
 1. Watch as the aggregator populates with results!
 
-Part a:
+Part a (Run a Switchboard node on your Fulfillment Manager):
 ```
 cd "$(git rev-parse --show-toplevel)/ts-example"
 solana airdrop 5 example-keypair.json
