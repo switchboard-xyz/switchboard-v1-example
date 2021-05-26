@@ -39,9 +39,11 @@ solana airdrop 5 example-keypair.json
 ts-node example_2a.ts --payerFile=example-keypair.json
 export FULFILLMENT_MANAGER_KEY=<FULFILLMENT MANAGER KEY HERE>
 export AUTH_KEY=<AUTH KEY HERE>
+docker-compose up
 ```
 
 Part b:
 ```
-ts-node example_2b.ts --payerFile=example-keypair.json
+ts-node example_2b.ts --payerFile=example-keypair.json \
+  --dataFeedPubkey=${FEED_PUBKEY} --updateAuthPubkey=${UPDATE_AUTH_KEY}
 ```

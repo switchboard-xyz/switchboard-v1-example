@@ -79,10 +79,10 @@ async function main() {
   console.log("Creating fulfillment manager...");
   let fulfillmentManagerAccount = await createFulfillmentManager(connection, payerAccount, SWITCHBOARD_DEVNET_PID);
   await setFulfillmentManagerConfigs(connection, payerAccount, fulfillmentManagerAccount, {
-      "heartbeatAuthRequired": true,
-      "usageAuthRequired": true,
-      "lock": false
-    });
+    "heartbeatAuthRequired": true,
+    "usageAuthRequired": true,
+    "lock": false
+  });
   console.log(`FULFILLMENT_MANAGER_KEY=${fulfillmentManagerAccount.publicKey}`);
   console.log("Configuring aggregator...");
   await setDataFeedConfigs(connection, payerAccount, dataFeedAccount, {
@@ -99,10 +99,21 @@ async function main() {
     payerAccount,
     fulfillmentManagerAccount,
     payerAccount.publicKey, {
-        authorizeHeartbeat: true,
-        authorizeUsage: false
+      "authorizeHeartbeat": true,
+      "authorizeUsage": false
     });
   console.log(`AUTH_KEY=${authAccount.publicKey}`);
+  console.log(`Creating authorization account for the data feed. This will be ` +
+              `used in part 2b.`);
+  let updateAuthAccount = await createFulfillmentManagerAuth(
+    connection,
+    payerAccount,
+    fulfillmentManagerAccount,
+    dataFeedAccount.publicKey, {
+      "authorizeHeartbeat": false,
+      "authorizeUsage": true
+    });
+  console.log(`UPDATE_AUTH_KEY=${authAccount.publicKey}`);
 }
 
 main().then(
