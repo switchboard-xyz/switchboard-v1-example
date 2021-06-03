@@ -31,7 +31,7 @@ import {
   updateFeed,
   publishSwitchboardAccount
 } from '@switchboard-xyz/switchboard-api';
-import yargs = require('yargs/yargs');
+const yargs = require('yargs/yargs');
 const resolve = require('resolve-dir');
 const bs58 = require('bs58');
 const fs = require('fs');

@@ -36,7 +36,7 @@ import {
 } from '@switchboard-xyz/switchboard-api';
 import { EventEmitter } from "events";
 import { waitFor } from "wait-for-event";
-import yargs = require('yargs/yargs');
+const yargs = require('yargs/yargs');
 const resolve = require('resolve-dir');
 const bs58 = require('bs58');
 const fs = require('fs');
@@ -91,8 +91,8 @@ async function main() {
   let emitter = new EventEmitter();
   let callback = async function (signatureResult: SignatureResult, ctx: Context) {
     let feedAccountInfo = await connection.getAccountInfo(dataFeedPubkey);
-    let state: AggregatorState = AggregatorState.decodeDelimited(feedAccountInfo.data.slice(1));
-    // It may take a few more seconds for response transactions to be confirmed.
+    let state: AggregatorState = AggregatorState.decodeDelimited(feedAccountInfo!.data.slice(1));
+    // It may take a few more seconds for the oracle response to be confirmed.
     await sleep(5000);
     console.log(`(${dataFeedPubkey.toBase58()}) state.\n`,
                 JSON.stringify(state.toJSON(), null, 2));

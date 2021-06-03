@@ -4,6 +4,8 @@ Starter repo for all things Switchboard.
 1. Install node 12: https://nodejs.org/en/download/package-manager/
 1. Docker compose: https://docs.docker.com/compose/install/
 1. ts-node: https://www.npmjs.com/package/ts-node
+1. cargo: https://doc.rust-lang.org/cargo/getting-started/installation.html
+1. solana cli https://docs.solana.com/cli/install-solana-cli-tools
 
 # Example 1: Calling a Data Feed
 
@@ -15,12 +17,12 @@ npm i
 cd "$(git rev-parse --show-toplevel)/example-program"
 # Build example program
 cargo build-bpf --manifest-path=Cargo.toml --bpf-out-dir=$PWD
-# Publish example program
+# Publish example program (NOTE: you may need to replace switchboard_example.so with libswitchboard_example.so)
 PROGRAM_PUBKEY=$(solana program deploy switchboard_example.so | tee /dev/tty | grep "Program Id:" | awk '{print $NF}')
 cd ../ts-example
 # Create and fund a payer account for the example
 solana-keygen new --outfile example-keypair.json
-solana airdrop 5 example-keypair.json
+solana airdrop 5 example-keypair.json --url https://api.devnet.solana.com
 # Choose a feed to use in your program
 # Find Data Feed Pubkeys at https://switchboard.xyz/#/explorer
 FEED_PUBKEY="<YOUR FEED PUBKEY HERE>"
@@ -46,7 +48,7 @@ In part `b` we will:
 Part a (Run a Switchboard node on your Fulfillment Manager):
 ```
 cd "$(git rev-parse --show-toplevel)/ts-example"
-solana airdrop 5 example-keypair.json
+solana airdrop 5 example-keypair.json --url https://api.devnet.solana.com
 ts-node example_2a.ts --payerFile=example-keypair.json
 export FULFILLMENT_MANAGER_KEY=<FULFILLMENT MANAGER KEY HERE>
 export AUTH_KEY=<AUTH KEY HERE>
