@@ -1,45 +1,18 @@
 import {
   Account,
   Cluster,
-  Context,
-  Connection,
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  SYSVAR_CLOCK_PUBKEY,
-  SYSVAR_RENT_PUBKEY,
-  SystemProgram,
-  Transaction,
-  TransactionInstruction,
   clusterApiUrl,
-  sendAndConfirmTransaction,
+  Connection,
+  Context,
+  PublicKey,
   SignatureResult,
-} from '@solana/web3.js';
-import {
-  AggregatorState,
-  FulfillmentManagerAuth,
-  FulfillmentManagerState,
-  OracleJob,
-  SWITCHBOARD_DEVNET_PID,
-  SwitchboardAccountType,
-  SwitchboardInstruction,
-  addFeedJob,
-  createDataFeed,
-  createFulfillmentManager,
-  createFulfillmentManagerAuth,
-  createOwnedStateAccount,
-  initFulfillmentManagerAccount,
-  publishSwitchboardAccount,
-  removeFeedJob,
-  setDataFeedConfigs,
-  setFulfillmentManagerConfigs,
-  updateFeed,
-} from '@switchboard-xyz/switchboard-api';
+} from "@solana/web3.js";
+import { AggregatorState, updateFeed } from "@switchboard-xyz/switchboard-api";
 import { EventEmitter } from "events";
+import fs from "fs";
+import resolve from "resolve-dir";
 import { waitFor } from "wait-for-event";
-const yargs = require('yargs/yargs');
-const resolve = require('resolve-dir');
-const bs58 = require('bs58');
-const fs = require('fs');
+import yargs from "yargs/yargs";
 
 let argv = yargs(process.argv).options({
   'updateAuthPubkey': {
