@@ -28,7 +28,7 @@ solana airdrop 5 example-keypair.json --url https://api.devnet.solana.com
 FEED_PUBKEY="<YOUR FEED PUBKEY HERE>"
 # Install dependencies and run the example
 npm i
-npx ts-node example_1.ts --payerFile=example-keypair.json --programPubkey=${PROGRAM_PUBKEY?} --dataFeedPubkey=${FEED_PUBKEY?}
+ts-node example_1.ts --payerFile=example-keypair.json --programPubkey=${PROGRAM_PUBKEY?} --dataFeedPubkey=${FEED_PUBKEY?}
 ```
 
 # Example 2: Creating your own Data Feed
