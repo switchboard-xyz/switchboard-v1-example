@@ -12,7 +12,7 @@ Starter repo for all things Switchboard.
 In this example, we will post an example Solana program that will parse and
 print a provided data feed.
 
-```
+```shell
 npm i
 cd "$(git rev-parse --show-toplevel)/example-program"
 # Build example program
@@ -26,8 +26,9 @@ solana airdrop 5 example-keypair.json --url https://api.devnet.solana.com
 # Choose a feed to use in your program
 # Find Data Feed Pubkeys at https://switchboard.xyz/#/explorer
 FEED_PUBKEY="<YOUR FEED PUBKEY HERE>"
-# Run the example
-ts-node example_1.ts --payerFile=example-keypair.json --programPubkey=${PROGRAM_PUBKEY?} --dataFeedPubkey=${FEED_PUBKEY?}
+# Install dependencies and run the example
+npm i
+npx ts-node example_1.ts --payerFile=example-keypair.json --programPubkey=${PROGRAM_PUBKEY?} --dataFeedPubkey=${FEED_PUBKEY?}
 ```
 
 # Example 2: Creating your own Data Feed
@@ -46,7 +47,7 @@ In part `b` we will:
 1. Watch as the aggregator populates with results!
 
 Part a (Run a Switchboard node on your Fulfillment Manager):
-```
+```shell
 cd "$(git rev-parse --show-toplevel)/ts-example"
 solana airdrop 5 example-keypair.json --url https://api.devnet.solana.com
 ts-node example_2a.ts --payerFile=example-keypair.json
@@ -56,7 +57,7 @@ docker-compose up
 ```
 
 Part b:
-```
+```shell
 FEED_PUBKEY=<FEED PUBKEY HERE>
 UPDATE_AUTH_KEY=<UPDATE AUTH PUBKEY HERE>
 ts-node example_2b.ts --payerFile=example-keypair.json \
