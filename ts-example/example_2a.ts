@@ -9,7 +9,7 @@ import {
   setFulfillmentManagerConfigs,
   SWITCHBOARD_DEVNET_PID,
 } from "@switchboard-xyz/switchboard-api";
-import fs from "fs";
+import * as fs from "fs";
 import resolve from "resolve-dir";
 import yargs from "yargs/yargs";
 
