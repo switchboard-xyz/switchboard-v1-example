@@ -1,40 +1,16 @@
 import {
-  SystemProgram,
   Account,
+  Cluster,
+  clusterApiUrl,
   Connection,
-  LAMPORTS_PER_SOL,
   PublicKey,
-  SYSVAR_CLOCK_PUBKEY,
-  SYSVAR_RENT_PUBKEY,
+  sendAndConfirmTransaction,
   Transaction,
   TransactionInstruction,
-  sendAndConfirmTransaction,
-  clusterApiUrl,
-  Cluster,
-} from '@solana/web3.js';
-import {
-  AggregatorState,
-  FulfillmentManagerState,
-  FulfillmentManagerAuth,
-  OracleJob,
-  SwitchboardAccountType,
-  SwitchboardInstruction,
-  addFeedJob,
-  createDataFeed,
-  removeFeedJob,
-  initFulfillmentManagerAccount,
-  createFulfillmentManager,
-  createFulfillmentManagerAuth,
-  createOwnedStateAccount,
-  setDataFeedConfigs,
-  setFulfillmentManagerConfigs,
-  updateFeed,
-  publishSwitchboardAccount
-} from '@switchboard-xyz/switchboard-api';
-const yargs = require('yargs/yargs');
-const resolve = require('resolve-dir');
-const bs58 = require('bs58');
-const fs = require('fs');
+} from "@solana/web3.js";
+import fs from "fs";
+import resolve from "resolve-dir";
+import yargs from "yargs/yargs";
 
 let argv = yargs(process.argv).options({
   'dataFeedPubkey': {

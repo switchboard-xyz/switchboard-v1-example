@@ -1,41 +1,17 @@
+import { Account, Cluster, clusterApiUrl, Connection } from "@solana/web3.js";
 import {
-  Account,
-  Cluster,
-  Connection,
-  LAMPORTS_PER_SOL,
-  PublicKey,
-  SYSVAR_CLOCK_PUBKEY,
-  SYSVAR_RENT_PUBKEY,
-  SystemProgram,
-  Transaction,
-  TransactionInstruction,
-  clusterApiUrl,
-  sendAndConfirmTransaction,
-} from '@solana/web3.js';
-import {
-  AggregatorState,
-  FulfillmentManagerAuth,
-  FulfillmentManagerState,
-  OracleJob,
-  SWITCHBOARD_DEVNET_PID,
-  SwitchboardAccountType,
-  SwitchboardInstruction,
   addFeedJob,
   createDataFeed,
   createFulfillmentManager,
   createFulfillmentManagerAuth,
-  createOwnedStateAccount,
-  initFulfillmentManagerAccount,
-  publishSwitchboardAccount,
-  removeFeedJob,
+  OracleJob,
   setDataFeedConfigs,
   setFulfillmentManagerConfigs,
-  updateFeed,
-} from '@switchboard-xyz/switchboard-api';
-const yargs = require('yargs/yargs');
-const resolve = require('resolve-dir');
-const bs58 = require('bs58');
-const fs = require('fs');
+  SWITCHBOARD_DEVNET_PID,
+} from "@switchboard-xyz/switchboard-api";
+import fs from "fs";
+import resolve from "resolve-dir";
+import yargs from "yargs/yargs";
 
 let argv = yargs(process.argv).options({
   'payerFile': {
