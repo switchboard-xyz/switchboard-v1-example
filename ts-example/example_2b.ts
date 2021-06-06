@@ -7,7 +7,11 @@ import {
   PublicKey,
   SignatureResult,
 } from "@solana/web3.js";
-import { AggregatorState, updateFeed } from "@switchboard-xyz/switchboard-api";
+import {
+  AggregatorState,
+  parseAggregatorAccountData,
+  updateFeed
+} from "@switchboard-xyz/switchboard-api";
 import { EventEmitter } from "events";
 import fs from "fs";
 import resolve from "resolve-dir";
@@ -63,8 +67,7 @@ async function main() {
   console.log("Awaiting update transaction finalization...");
   let emitter = new EventEmitter();
   let callback = async function (signatureResult: SignatureResult, ctx: Context) {
-    let feedAccountInfo = await connection.getAccountInfo(dataFeedPubkey);
-    let state: AggregatorState = AggregatorState.decodeDelimited(feedAccountInfo!.data.slice(1));
+    let state: AggregatorState = await parseAggregatorAccountData(connection, dataFeedPubkey);
     // It may take a few more seconds for the oracle response to be confirmed.
     await sleep(5000);
     console.log(`(${dataFeedPubkey.toBase58()}) state.\n`,
