@@ -60,5 +60,5 @@ Part b:
 FEED_PUBKEY=<FEED PUBKEY HERE>
 UPDATE_AUTH_KEY=<UPDATE AUTH PUBKEY HERE>
 ts-node example_2b.ts --payerFile=example-keypair.json \
-  --dataFeedPubkey=${FEED_PUBKEY} --updateAuthPubkey=${UPDATE_AUTH_KEY}
+  --dataFeedPubkey=${FEED_PUBKEY?} --updateAuthPubkey=${UPDATE_AUTH_KEY?}
 ```
