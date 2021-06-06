@@ -13,7 +13,6 @@ In this example, we will post an example Solana program that will parse and
 print a provided data feed.
 
 ```shell
-npm i
 cd "$(git rev-parse --show-toplevel)/example-program"
 # Build example program
 cargo build-bpf --manifest-path=Cargo.toml --bpf-out-dir=$PWD
