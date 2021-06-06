@@ -12,11 +12,11 @@ import {
   parseAggregatorAccountData,
   updateFeed
 } from "@switchboard-xyz/switchboard-api";
-import { EventEmitter } from "events";
-import fs from "fs";
+import * as fs from "fs";
 import resolve from "resolve-dir";
-import { waitFor } from "wait-for-event";
 import yargs from "yargs/yargs";
+import { EventEmitter } from "events";
+import { waitFor } from "wait-for-event";
 
 let argv = yargs(process.argv).options({
   'updateAuthPubkey': {
