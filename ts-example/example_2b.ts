@@ -67,11 +67,17 @@ async function main() {
   console.log("Awaiting update transaction finalization...");
   let emitter = new EventEmitter();
   let callback = async function (signatureResult: SignatureResult, ctx: Context) {
-    let state: AggregatorState = await parseAggregatorAccountData(connection, dataFeedPubkey);
-    // It may take a few more seconds for the oracle response to be confirmed.
-    await sleep(5000);
-    console.log(`(${dataFeedPubkey.toBase58()}) state.\n`,
-                JSON.stringify(state.toJSON(), null, 2));
+    let attempts = 30;
+    while (attempts--) {
+      let state: AggregatorState = await parseAggregatorAccountData(connection, dataFeedPubkey);
+      if (state.currentRoundResult.numSuccess + state.currentRoundResult.numError !== 0) {
+        console.log(`(${dataFeedPubkey.toBase58()}) state.\n`,
+                    JSON.stringify(state.toJSON(), null, 2));
+        break;
+      }
+      // It may take a few more seconds for the oracle response to be confirmed.
+      await sleep(1_000);
+    }
     emitter.emit("Done");
   };
   connection.onSignature(signature, callback, 'finalized');
