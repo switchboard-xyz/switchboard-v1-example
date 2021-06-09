@@ -39,8 +39,9 @@ async function main() {
   let payerAccount = new Account(payerKeypair);
   console.log("Creating aggregator...");
   let dataFeedAccount = await createDataFeed(connection, payerAccount, SWITCHBOARD_DEVNET_PID);
+  console.log(`FEED_PUBKEY=${dataFeedAccount.publicKey}`);
   console.log("Adding job to aggregator...");
-  await addFeedJob(connection, payerAccount, dataFeedAccount, [
+  let jobAccount = await addFeedJob(connection, payerAccount, dataFeedAccount, [
     OracleJob.Task.create({
       httpTask: OracleJob.HttpTask.create({
         url: `https://www.binance.us/api/v3/ticker/price?symbol=BTCUSD`
@@ -50,8 +51,7 @@ async function main() {
       jsonParseTask: OracleJob.JsonParseTask.create({ path: "$.price" }),
     }),
   ]);
-
-  console.log(`FEED_PUBKEY=${dataFeedAccount.publicKey}`);
+  console.log(`JOB_PUBKEY=${jobAccount.publicKey}`);
   console.log("Creating fulfillment manager...");
   let fulfillmentManagerAccount = await createFulfillmentManager(connection, payerAccount, SWITCHBOARD_DEVNET_PID);
   await setFulfillmentManagerConfigs(connection, payerAccount, fulfillmentManagerAccount, {

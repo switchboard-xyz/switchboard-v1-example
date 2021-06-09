@@ -17,7 +17,7 @@ cd "$(git rev-parse --show-toplevel)/example-program"
 # Build example program
 cargo build-bpf --manifest-path=Cargo.toml --bpf-out-dir=$PWD
 # Publish example program (NOTE: you may need to replace switchboard_example.so with libswitchboard_example.so)
-PROGRAM_PUBKEY=$(solana program deploy switchboard_example.so | tee /dev/tty | grep "Program Id:" | awk '{print $NF}')
+PROGRAM_PUBKEY=$(solana program deploy --url https://api.devnet.solana.com switchboard_example.so | tee /dev/tty | grep "Program Id:" | awk '{print $NF}')
 cd ../ts-example
 # Create and fund a payer account for the example
 solana-keygen new --outfile example-keypair.json

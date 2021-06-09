@@ -53,7 +53,7 @@ async function sleep(ms: number): Promise<void> {
 
 async function main() {
   let cluster = 'devnet';
-  let connection = new Connection(clusterApiUrl(toCluster(cluster), true), 'finalized');
+  let connection = new Connection(clusterApiUrl(toCluster(cluster), true), 'processed');
   let payerKeypair = JSON.parse(fs.readFileSync(resolve(argv.payerFile), 'utf-8'));
   let payerAccount = new Account(payerKeypair);
   let dataFeedPubkey = new PublicKey(argv.dataFeedPubkey);
@@ -75,12 +75,12 @@ async function main() {
                     JSON.stringify(state.toJSON(), null, 2));
         break;
       }
-      // It may take a few more seconds for the oracle response to be confirmed.
+      // It may take a few more seconds for the oracle response to be processed.
       await sleep(1_000);
     }
     emitter.emit("Done");
   };
-  connection.onSignature(signature, callback, 'finalized');
+  connection.onSignature(signature, callback, 'processed');
   await waitFor("Done", emitter);
 }
 
