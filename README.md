@@ -17,11 +17,11 @@ cd "$(git rev-parse --show-toplevel)/example-program"
 # Build example program
 cargo build-bpf --manifest-path=Cargo.toml --bpf-out-dir=$PWD
 # Publish example program (NOTE: you may need to replace switchboard_example.so with libswitchboard_example.so)
-PROGRAM_PUBKEY=$(solana program deploy --url https://api.devnet.solana.com switchboard_example.so | tee /dev/tty | grep "Program Id:" | awk '{print $NF}')
+PROGRAM_PUBKEY=$(solana program deploy switchboard_example.so | tee /dev/tty | grep "Program Id:" | awk '{print $NF}')
 cd ../ts-example
 # Create and fund a payer account for the example
 solana-keygen new --outfile example-keypair.json
-solana airdrop 5 example-keypair.json --url https://api.devnet.solana.com
+solana airdrop 5 example-keypair.json
 # Choose a feed to use in your program
 # Find Data Feed Pubkeys at https://switchboard.xyz/#/explorer
 FEED_PUBKEY="<YOUR FEED PUBKEY HERE>"
@@ -48,7 +48,7 @@ In part `b` we will:
 Part a (Run a Switchboard node on your Fulfillment Manager):
 ```shell
 cd "$(git rev-parse --show-toplevel)/ts-example"
-solana airdrop 5 example-keypair.json --url https://api.devnet.solana.com
+solana airdrop 5 example-keypair.json
 ts-node example_2a.ts --payerFile=example-keypair.json
 export FULFILLMENT_MANAGER_KEY=<FULFILLMENT MANAGER KEY HERE>
 export AUTH_KEY=<AUTH KEY HERE>
