@@ -52,8 +52,8 @@ async function sleep(ms: number): Promise<void> {
 }
 
 async function main() {
-  let cluster = 'devnet';
-  let connection = new Connection(clusterApiUrl(toCluster(cluster), true), 'processed');
+  let cluster = 'localnet';
+  let connection = new Connection("http://localhost:8899", 'processed');
   let payerKeypair = JSON.parse(fs.readFileSync(resolve(argv.payerFile), 'utf-8'));
   let payerAccount = new Account(payerKeypair);
   let dataFeedPubkey = new PublicKey(argv.dataFeedPubkey);
