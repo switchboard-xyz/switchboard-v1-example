@@ -1,6 +1,5 @@
-import { Account, Cluster, clusterApiUrl, Connection, PublicKey } from "@solana/web3.js";
+import { Account, Cluster, clusterApiUrl, Connection } from "@solana/web3.js";
 import {
-  addFeedParseOptimizedAccount,
   addFeedJob,
   createDataFeed,
   createFulfillmentManager,
@@ -34,17 +33,13 @@ function toCluster(cluster: string): Cluster {
 }
 
 async function main() {
-  let cluster = 'localhost';
-  let PID = '81iYW54QN67V51HkgwEwuhAkhJPeyUpvParN1jTSzYAF';
-  let connection = new Connection("http://127.0.0.1:8899", 'processed');
+  let cluster = 'devnet';
+  let connection = new Connection(clusterApiUrl(toCluster(cluster), true), 'processed');
   let payerKeypair = JSON.parse(fs.readFileSync(resolve(argv.payerFile), 'utf-8'));
   let payerAccount = new Account(payerKeypair);
   console.log("Creating aggregator...");
-  let dataFeedAccount = await createDataFeed(connection, payerAccount, new PublicKey(PID));
+  let dataFeedAccount = await createDataFeed(connection, payerAccount, SWITCHBOARD_DEVNET_PID);
   console.log(`FEED_PUBKEY=${dataFeedAccount.publicKey}`);
-  console.log("Creating parse optimized account for last aggregator result...");
-  let opAccount = await addFeedParseOptimizedAccount(connection, payerAccount, dataFeedAccount);
-  console.log(`PARSE_OPTIMIZED_ACCOUNT=${opAccount.publicKey}`);
   console.log("Adding job to aggregator...");
   let jobAccount = await addFeedJob(connection, payerAccount, dataFeedAccount, [
     OracleJob.Task.create({
@@ -58,7 +53,7 @@ async function main() {
   ]);
   console.log(`JOB_PUBKEY=${jobAccount.publicKey}`);
   console.log("Creating fulfillment manager...");
-  let fulfillmentManagerAccount = await createFulfillmentManager(connection, payerAccount, new PublicKey(PID));
+  let fulfillmentManagerAccount = await createFulfillmentManager(connection, payerAccount, SWITCHBOARD_DEVNET_PID);
   await setFulfillmentManagerConfigs(connection, payerAccount, fulfillmentManagerAccount, {
     "heartbeatAuthRequired": true,
     "usageAuthRequired": true,
