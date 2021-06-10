@@ -68,7 +68,7 @@ async function main() {
   console.log("Configuring aggregator...");
   await setDataFeedConfigs(connection, payerAccount, dataFeedAccount, {
     "minConfirmations": 1,
-    "minUpdateDelaySeconds": 1,
+    "minUpdateDelaySeconds": 5,
     "fulfillmentManagerPubkey": fulfillmentManagerAccount.publicKey.toBuffer(),
     "lock": false
   });
