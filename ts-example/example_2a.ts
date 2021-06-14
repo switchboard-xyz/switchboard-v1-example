@@ -43,8 +43,9 @@ async function main() {
   console.log("Creating aggregator...");
   let dataFeedAccount = await createDataFeed(connection, payerAccount, PID);
   console.log(`FEED_PUBKEY=${dataFeedAccount.publicKey}`);
+  console.log("Creating a parsed optimized mirror of the aggregator (optional)...");
   let poAccount = await addFeedParseOptimizedAccount(connection, payerAccount, dataFeedAccount, 1000);
-  console.log(`OPTIMIZED_RESULT_ACCOUNT=${poAccount.publicKey}`);
+  console.log(`OPTIMIZED_RESULT_PUBKEY=${poAccount.publicKey}`);
   console.log("Adding job to aggregator...");
   let jobAccount = await addFeedJob(connection, payerAccount, dataFeedAccount, [
     OracleJob.Task.create({

@@ -28,6 +28,9 @@ FEED_PUBKEY="<YOUR FEED PUBKEY HERE>"
 # Install dependencies and run the example
 npm i
 ts-node example_1.ts --payerFile=example-keypair.json --programPubkey=${PROGRAM_PUBKEY?} --dataFeedPubkey=${FEED_PUBKEY?}
+# EXTRA: If you want to keep the compute units low when getting the result of the aggregator, use the PARSE_OPTIMIZED mirror account instead
+OPTIMIZED_RESULT_PUBKEY="<YOUR PUBKEY HERE>"
+ts-node example_1.ts --payerFile=example-keypair.json --programPubkey=${PROGRAM_PUBKEY?} --dataFeedPubkey=${OPTIMIZED_RESULT_PUBKEY?}
 ```
 
 # Example 2: Creating your own Data Feed
