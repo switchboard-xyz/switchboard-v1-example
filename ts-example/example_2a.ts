@@ -1,13 +1,14 @@
 import { Account, Cluster, clusterApiUrl, Connection } from "@solana/web3.js";
 import {
+  OracleJob,
+  SWITCHBOARD_DEVNET_PID,
   addFeedJob,
+  addFeedParseOptimizedAccount,
   createDataFeed,
   createFulfillmentManager,
   createFulfillmentManagerAuth,
-  OracleJob,
   setDataFeedConfigs,
   setFulfillmentManagerConfigs,
-  SWITCHBOARD_DEVNET_PID,
 } from "@switchboard-xyz/switchboard-api";
 import * as fs from "fs";
 import resolve from "resolve-dir";
@@ -40,6 +41,8 @@ async function main() {
   console.log("Creating aggregator...");
   let dataFeedAccount = await createDataFeed(connection, payerAccount, SWITCHBOARD_DEVNET_PID);
   console.log(`FEED_PUBKEY=${dataFeedAccount.publicKey}`);
+  let poAccount = await addFeedParseOptimizedAccount(connection, payerAccount, dataFeedAccount, 1000);
+  console.log(`OPTIMIZED_RESULT_ACCOUNT=${poAccount.publicKey}`);
   console.log("Adding job to aggregator...");
   let jobAccount = await addFeedJob(connection, payerAccount, dataFeedAccount, [
     OracleJob.Task.create({

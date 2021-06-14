@@ -32,7 +32,7 @@
   },
   "dependencies": {
     "@solana/web3.js": "^1.17.0",
-    "@switchboard-xyz/switchboard-api": "^0.2.89",
+    "@switchboard-xyz/switchboard-api": "^0.2.100",
     "@types/big.js": "^6.0.2",
     "@types/yargs": "^16.0.1",
     "base-58": "0.0.1",
