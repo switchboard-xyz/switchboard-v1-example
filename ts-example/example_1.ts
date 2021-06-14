@@ -43,7 +43,8 @@ function toCluster(cluster: string): Cluster {
 
 async function main() {
   let cluster = 'devnet';
-  let connection = new Connection(clusterApiUrl(toCluster(cluster), true), 'processed');
+  let url = clusterApiUrl(toCluster(cluster), true);
+  let connection = new Connection(url, 'processed');
   let payerKeypair = JSON.parse(fs.readFileSync(resolve(argv.payerFile), 'utf-8'));
   let payerAccount = new Account(payerKeypair);
 

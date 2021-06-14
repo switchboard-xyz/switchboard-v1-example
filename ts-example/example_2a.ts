@@ -35,11 +35,13 @@ function toCluster(cluster: string): Cluster {
 
 async function main() {
   let cluster = 'devnet';
-  let connection = new Connection(clusterApiUrl(toCluster(cluster), true), 'processed');
+  let url = clusterApiUrl(toCluster(cluster), true);
+  let PID = SWITCHBOARD_DEVNET_PID;
+  let connection = new Connection(url, 'processed');
   let payerKeypair = JSON.parse(fs.readFileSync(resolve(argv.payerFile), 'utf-8'));
   let payerAccount = new Account(payerKeypair);
   console.log("Creating aggregator...");
-  let dataFeedAccount = await createDataFeed(connection, payerAccount, SWITCHBOARD_DEVNET_PID);
+  let dataFeedAccount = await createDataFeed(connection, payerAccount, PID);
   console.log(`FEED_PUBKEY=${dataFeedAccount.publicKey}`);
   let poAccount = await addFeedParseOptimizedAccount(connection, payerAccount, dataFeedAccount, 1000);
   console.log(`OPTIMIZED_RESULT_ACCOUNT=${poAccount.publicKey}`);
@@ -56,7 +58,7 @@ async function main() {
   ]);
   console.log(`JOB_PUBKEY=${jobAccount.publicKey}`);
   console.log("Creating fulfillment manager...");
-  let fulfillmentManagerAccount = await createFulfillmentManager(connection, payerAccount, SWITCHBOARD_DEVNET_PID);
+  let fulfillmentManagerAccount = await createFulfillmentManager(connection, payerAccount, PID);
   await setFulfillmentManagerConfigs(connection, payerAccount, fulfillmentManagerAccount, {
     "heartbeatAuthRequired": true,
     "usageAuthRequired": true,
