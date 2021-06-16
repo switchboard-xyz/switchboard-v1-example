@@ -1,14 +1,14 @@
 use solana_program::{
-    account_info::{AccountInfo, next_account_info}, entrypoint,
-    entrypoint::ProgramResult, msg, pubkey::Pubkey,
+    account_info::{next_account_info, AccountInfo},
+    entrypoint,
+    entrypoint::ProgramResult,
+    msg,
+    program_error::ProgramError,
+    pubkey::Pubkey,
 };
 use switchboard_program::{
-    get_aggregator,
-    get_aggregator_result,
-    AggregatorState,
-    RoundResult,
-    fast_parse_switchboard_result,
-    SwitchboardAccountType,
+    get_aggregator, get_aggregator_result, AggregatorState, FastRoundResultAccountData,
+    RoundResult, SwitchboardAccountType,
 };
 
 entrypoint!(process_instruction);
@@ -21,14 +21,20 @@ fn process_instruction<'a>(
     let accounts_iter = &mut accounts.iter();
     let switchboard_feed_account = next_account_info(accounts_iter)?;
     let mut out = 0.0;
-    if switchboard_feed_account.try_borrow_data()?[0] == SwitchboardAccountType::TYPE_AGGREGATOR as u8 {
+    if switchboard_feed_account.try_borrow_data()?[0]
+        == SwitchboardAccountType::TYPE_AGGREGATOR as u8
+    {
         let aggregator: AggregatorState = get_aggregator(switchboard_feed_account)?;
         let round_result: RoundResult = get_aggregator_result(&aggregator)?;
         out = round_result.result.unwrap_or(0.0);
-    } else {
+    } else if switchboard_feed_account.try_borrow_data()?[0]
+        == SwitchboardAccountType::TYPE_AGGREGATOR_RESULT_PARSE_OPTIMIZED as u8
+    {
         let buf = switchboard_feed_account.try_borrow_data()?;
-        let parsed_data = fast_parse_switchboard_result(&buf);
-        out = parsed_data.result.result;
+        let feed_data = FastRoundResultAccountData::deserialize(&buf).unwrap();
+        out = feed_data.result.result;
+    } else {
+        return Err(ProgramError::InvalidAccountData);
     }
     msg!("Current feed result is {}!", &lexical::to_string(out));
     Ok(())
