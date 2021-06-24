@@ -22,6 +22,10 @@ fn process_instruction<'a>(
     let switchboard_feed_account = next_account_info(accounts_iter)?;
     let mut out = 0.0;
     let account_buf = switchboard_feed_account.try_borrow_data()?;
+    if account_buf.len() == 0 {
+        msg!("The provided account is empty.");
+        return Err(ProgramError::InvalidAccountData);
+    }
     if account_buf[0] == SwitchboardAccountType::TYPE_AGGREGATOR as u8 {
         let aggregator: AggregatorState = get_aggregator(switchboard_feed_account)
             .map_err(|e| {
