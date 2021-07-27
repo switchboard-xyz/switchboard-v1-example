@@ -40,13 +40,13 @@ async function main() {
   let connection = new Connection(url, 'processed');
   let payerKeypair = JSON.parse(fs.readFileSync(resolve(argv.payerFile), 'utf-8'));
   let payerAccount = new Account(payerKeypair);
-  console.log("Creating aggregator...");
+  console.log("# Creating aggregator...");
   let dataFeedAccount = await createDataFeed(connection, payerAccount, PID);
-  console.log(`FEED_PUBKEY=${dataFeedAccount.publicKey}`);
-  console.log("Creating a parsed optimized mirror of the aggregator (optional)...");
+  console.log(`export FEED_PUBKEY=${dataFeedAccount.publicKey}`);
+  console.log("# Creating a parsed optimized mirror of the aggregator (optional)...");
   let poAccount = await addFeedParseOptimizedAccount(connection, payerAccount, dataFeedAccount, 1000);
-  console.log(`OPTIMIZED_RESULT_PUBKEY=${poAccount.publicKey}`);
-  console.log("Adding job to aggregator...");
+  console.log(`export OPTIMIZED_RESULT_PUBKEY=${poAccount.publicKey}`);
+  console.log("# Adding job to aggregator...");
   let jobAccount = await addFeedJob(connection, payerAccount, dataFeedAccount, [
     OracleJob.Task.create({
       httpTask: OracleJob.HttpTask.create({
@@ -57,23 +57,23 @@ async function main() {
       jsonParseTask: OracleJob.JsonParseTask.create({ path: "$.price" }),
     }),
   ]);
-  console.log(`JOB_PUBKEY=${jobAccount.publicKey}`);
-  console.log("Creating fulfillment manager...");
+  console.log(`export JOB_PUBKEY=${jobAccount.publicKey}`);
+  console.log("# Creating fulfillment manager...");
   let fulfillmentManagerAccount = await createFulfillmentManager(connection, payerAccount, PID);
   await setFulfillmentManagerConfigs(connection, payerAccount, fulfillmentManagerAccount, {
     "heartbeatAuthRequired": true,
     "usageAuthRequired": true,
     "lock": false
   });
-  console.log(`FULFILLMENT_MANAGER_KEY=${fulfillmentManagerAccount.publicKey}`);
-  console.log("Configuring aggregator...");
+  console.log(`export FULFILLMENT_MANAGER_KEY=${fulfillmentManagerAccount.publicKey}`);
+  console.log("# Configuring aggregator...");
   await setDataFeedConfigs(connection, payerAccount, dataFeedAccount, {
     "minConfirmations": 1,
     "minUpdateDelaySeconds": 1,
     "fulfillmentManagerPubkey": fulfillmentManagerAccount.publicKey.toBuffer(),
     "lock": false
   });
-  console.log(`Creating authorization account to permit account `
+  console.log(`# Creating authorization account to permit account `
               + `${payerAccount.publicKey} to join fulfillment manager ` +
                 `${fulfillmentManagerAccount.publicKey}`);
   let authAccount = await createFulfillmentManagerAuth(
@@ -84,8 +84,8 @@ async function main() {
       "authorizeHeartbeat": true,
       "authorizeUsage": false
     });
-  console.log(`AUTH_KEY=${authAccount.publicKey}`);
-  console.log(`Creating authorization account for the data feed. This will be ` +
+  console.log(`export AUTH_KEY=${authAccount.publicKey}`);
+  console.log(`# Creating authorization account for the data feed. This will be ` +
               `used in part 2b.`);
   let updateAuthAccount = await createFulfillmentManagerAuth(
     connection,
@@ -95,7 +95,7 @@ async function main() {
       "authorizeHeartbeat": false,
       "authorizeUsage": true
     });
-  console.log(`UPDATE_AUTH_KEY=${updateAuthAccount.publicKey}`);
+  console.log(`export UPDATE_AUTH_KEY=${updateAuthAccount.publicKey}`);
 }
 
 main().then(
