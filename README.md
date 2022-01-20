@@ -51,7 +51,7 @@ In part `b` we will:
 Part a (Run a Switchboard node on your Fulfillment Manager):
 ```shell
 cd "$(git rev-parse --show-toplevel)/ts-example"
-solana airdrop 5 example-keypair.json
+solana airdrop 2 example-keypair.json
 ts-node example_2a.ts --payerFile=example-keypair.json
 export FULFILLMENT_MANAGER_KEY=<FULFILLMENT MANAGER KEY HERE>
 export AUTH_KEY=<AUTH KEY HERE>
