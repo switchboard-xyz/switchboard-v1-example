@@ -21,7 +21,7 @@ PROGRAM_PUBKEY=$(solana program deploy switchboard_example.so | tee /dev/tty | g
 cd ../ts-example
 # Create and fund a payer account for the example
 solana-keygen new --outfile example-keypair.json
-solana airdrop 5 example-keypair.json
+solana airdrop 2 example-keypair.json
 # Choose a feed to use in your program
 # Find Data Feed Pubkeys at https://switchboard.xyz/#/explorer
 FEED_PUBKEY="<YOUR FEED PUBKEY HERE>"
